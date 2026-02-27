@@ -1,0 +1,55 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: netwatch
+      POSTGRES_PASSWORD: netwatch
+      POSTGRES_DB: netwatch
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U netwatch"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://netwatch:netwatch@db:5432/netwatch
+    depends_on:
+      db:
+        condition: service_healthy
+
+  agent:
+    build: ./agent
+    restart: unless-stopped
+    network_mode: host          
+    environment:
+      API_URL: http://127.0.0.1:8000/packets
+    depends_on:
+      - backend
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+
+  dashboard:
+    build: ./dashboard
+    restart: unless-stopped
+    ports:
+      - "8501:8501"
+    environment:
+      API_URL: http://backend:8000
+    depends_on:
+      - backend
+
+volumes:
+  pg_data:
