@@ -2,8 +2,9 @@ from scapy.all import sniff
 from scapy.layers.inet import IP, TCP, UDP
 from datetime import datetime
 import requests
+import os
 
-API_URL = "http://127.0.0.1:8000/packets"
+API_URL = os.getenv("API_URL", "http://127.0.0.1:8000/packets")
 
 def process_packet(packet):
     if IP in packet:
