@@ -191,7 +191,3 @@ The Streamlit dashboard includes:
 Auto-refreshes every **2 seconds** for live monitoring.
 
 ---
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
