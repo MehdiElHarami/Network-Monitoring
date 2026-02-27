@@ -10,7 +10,15 @@ A full-stack network monitoring platform that captures live traffic, stores pack
 
 ---
 
-## 📋 Table of Contents
+## � Screenshots
+
+![Dashboard Overview](images/image.png)
+
+![Dashboard Details](images/image2.png)
+
+---
+
+## �📋 Table of Contents
 
 - [Features](#-features)
 - [Architecture](#-architecture)
