@@ -87,7 +87,7 @@ st.markdown("""
 st_autorefresh(interval=2_000, key="live_refresh")
 
 with st.sidebar:
-    st.image("https://img.icons8.com/fluency/96/network-protection.png", width=64)
+    st.image("https://img.icons8.com/?size=100&id=QfYckYg0wAEn&format=png&color=000000", width=64)
     st.markdown("## 🛡️ NetWatch")
     st.caption("Real-time Network Monitoring")
     st.divider()
