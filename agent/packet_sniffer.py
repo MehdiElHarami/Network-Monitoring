@@ -1,18 +1,19 @@
 from scapy.all import sniff
 from scapy.layers.inet import IP, TCP, UDP
 from datetime import datetime
+import requests
+
+API_URL = "http://127.0.0.1:8000/packets"
 
 def process_packet(packet):
     if IP in packet:
         ip_layer = packet[IP]
 
-        protocol = None
+        protocol = "OTHER"
         if TCP in packet:
             protocol = "TCP"
         elif UDP in packet:
             protocol = "UDP"
-        else:
-            protocol = "OTHER"
 
         packet_data = {
             "timestamp": datetime.now().isoformat(),
@@ -22,7 +23,11 @@ def process_packet(packet):
             "packet_size": len(packet)
         }
 
-        print(packet_data)
+        try:
+            response = requests.post(API_URL, json=packet_data)
+            print(response.status_code)
+        except Exception as e:
+            print("Error sending packet:", e)
 
 if __name__ == "__main__":
     print("Starting packet capture...")
