@@ -1,11 +1,13 @@
+import os
 import streamlit as st
 import requests
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime
+from streamlit_autorefresh import st_autorefresh
 
-API_URL = "http://127.0.0.1:8000"
+API_URL = os.getenv("API_URL", "http://127.0.0.1:8000")
 
 st.set_page_config(
     page_title="NetWatch Dashboard",
@@ -82,19 +84,17 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
+st_autorefresh(interval=2_000, key="live_refresh")
+
 with st.sidebar:
     st.image("https://img.icons8.com/fluency/96/network-protection.png", width=64)
     st.markdown("## 🛡️ NetWatch")
     st.caption("Real-time Network Monitoring")
     st.divider()
-    auto_refresh = st.toggle("Auto-refresh (10s)", value=False)
+    st.markdown("🟢 **Live** — refreshing every 2s")
     refresh_btn = st.button("🔄 Refresh Now", use_container_width=True)
     st.divider()
     st.markdown(f"**Last updated:**  \n`{datetime.now().strftime('%H:%M:%S')}`")
-
-if auto_refresh:
-    from streamlit_autorefresh import st_autorefresh
-    st_autorefresh(interval=10_000, key="auto_refresh")
 
 
 def api_get(endpoint: str):
